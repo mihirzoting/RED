@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "gpt-tokenizer": "^3.4.0"
+  },
+  "name": "red",
+  "version": "1.0.0",
+  "description": "Chrome extension that enhances Claude.ai with real-time prompt analysis, refinement suggestions, and efficiency metrics. Features neubrutalist design and tiered quota system.",
+  "main": "background.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {
+    "jsdom": "^29.1.1",
+    "vitest": "^4.1.9"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
