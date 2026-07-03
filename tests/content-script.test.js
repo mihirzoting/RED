@@ -63,12 +63,12 @@ describe('saveAnalysisToSupabase()', () => {
     var token = await globalThis.__RED.getValidToken();
     if (!token) return;
     try {
-      await fetch('https://votjuphsggdecoawqeqc.supabase.co/rest/v1/refine_history', {
+      await fetch('https://placeholder-project.supabase.co/rest/v1/refine_history', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + token,
-          apikey: 'test-anon-key',
+          apikey: 'placeholder-anon-key',
           Prefer: 'return=minimal',
         },
         body: JSON.stringify({
@@ -129,16 +129,17 @@ describe('refinePrompt() input validation', () => {
   });
 });
 
-describe('EDGE_FN_URL and SUPABASE_URL constants', () => {
-  it('SUPABASE_URL is set correctly in source', () => {
-    // This tests the hardcoded URL is consistent
-    const SUPABASE_URL = 'https://votjuphsggdecoawqeqc.supabase.co';
+describe('SUPABASE_URL and EDGE_FN_URL', () => {
+  it('are derived from config', () => {
+    var SUPABASE_URL = 'https://placeholder-project.supabase.co';
+    var SUPABASE_ANON_KEY = 'placeholder-anon-key';
     expect(SUPABASE_URL).toMatch(/^https:\/\/.+\.supabase\.co$/);
+    expect(SUPABASE_ANON_KEY).toBeTruthy();
   });
 
   it('EDGE_FN_URL is derived from SUPABASE_URL', () => {
-    const SUPABASE_URL = 'https://votjuphsggdecoawqeqc.supabase.co';
-    const EDGE_FN_URL = SUPABASE_URL + '/functions/v1/refine';
-    expect(EDGE_FN_URL).toBe('https://votjuphsggdecoawqeqc.supabase.co/functions/v1/refine');
+    var SUPABASE_URL = 'https://placeholder-project.supabase.co';
+    var EDGE_FN_URL = SUPABASE_URL + '/functions/v1/refine';
+    expect(EDGE_FN_URL).toBe('https://placeholder-project.supabase.co/functions/v1/refine');
   });
 });

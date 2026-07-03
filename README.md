@@ -1,6 +1,6 @@
 # RED (Refine Every Detail)
 
-Chrome extension that enhances Claude.ai with real-time prompt analysis, refinement suggestions, and efficiency metrics. Built with Manifest V3, Supabase, and Razorpay.
+Chrome extension that enhances AI chat interfaces with real-time prompt analysis, refinement suggestions, and efficiency metrics. Built with Manifest V3, Supabase, and Razorpay.
 
 ## Features
 
@@ -70,7 +70,7 @@ RED/
 │   ├── auth.test.js              — 9 tests
 │   ├── content-script.test.js    — 8 tests
 │   ├── detect-input.test.js      — 13 tests
-│   ├── edge-functions.test.js    — 71 tests (Razorpay + refine + SSE)
+│   ├── edge-functions.test.js    — 56 tests (Razorpay + refine + SSE)
 │   ├── history-free.test.js      — 22 tests
 │   ├── history-premium.test.js   — 23 tests
 │   ├── inject-panel.test.js      — 26 tests
@@ -90,7 +90,7 @@ RED/
 
 1. Enable Chrome's Developer Mode at `chrome://extensions`
 2. Click "Load unpacked" and select the `RED` directory
-3. Visit `claude.ai` — the panel appears below the input box
+3. Visit any supported site — the panel appears below the input box
 
 ### 2. Supabase
 
@@ -144,7 +144,7 @@ npm install
 npx vitest run
 ```
 
-All 259 tests should pass across 9 test files.
+All 244 tests should pass across 9 test files.
 
 ## Edge Functions
 

@@ -1,9 +1,9 @@
 console.log('[RED] content script loaded');
 
 let debounceTimer = null;
-const EDGE_FN_URL = 'https://votjuphsggdecoawqeqc.supabase.co/functions/v1/refine';
-const SUPABASE_URL = 'https://votjuphsggdecoawqeqc.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvdGp1cGhzZ2dkZWNvYXdxZXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4NTE3OTQsImV4cCI6MjA5NzQyNzc5NH0.fZW6kk62ka7glAPbJiNrqrh2UU84v3RNuR_e5w04mKE';
+const EDGE_FN_URL = window.__RED_CONFIG.SUPABASE_URL + '/functions/v1/refine';
+const SUPABASE_URL = window.__RED_CONFIG.SUPABASE_URL;
+const SUPABASE_ANON_KEY = window.__RED_CONFIG.SUPABASE_ANON_KEY;
 
 let currentPromptText = '';
 
@@ -77,18 +77,6 @@ window.__RED.watchInput(
       analysis._rawText = text;
       window.__RED._lastAnalysis = analysis;
       window.__RED.updateAnalysis(analysis);
-      const wordCount = text.trim().split(/\s+/).length;
-      if (wordCount >= 3 && tokens > 0 && window.__RED.saveToFreeHistory) {
-        const issues = (analysis.issues || []).map(i => i.label);
-        window.__RED.saveToFreeHistory({
-          prompt: text,
-          score: analysis.scores ? analysis.scores.overall : 0,
-          tokens: tokens,
-          refined: false,
-          issues: issues,
-        });
-      }
-      saveAnalysisToSupabase(text, tokens, analysis);
     }, 500);
   },
   function onConnect(el) {
@@ -118,18 +106,6 @@ window.__RED.watchInput(
         analysis._rawText = text;
         window.__RED._lastAnalysis = analysis;
         window.__RED.updateAnalysis(analysis);
-        const wordCount = text.trim().split(/\s+/).length;
-        if (wordCount >= 3 && tokens > 0 && window.__RED.saveToFreeHistory) {
-          const issues = (analysis.issues || []).map(i => i.label);
-          window.__RED.saveToFreeHistory({
-            prompt: text,
-            score: analysis.scores ? analysis.scores.overall : 0,
-            tokens: tokens,
-            refined: false,
-            issues: issues,
-          });
-        }
-        saveAnalysisToSupabase(text, tokens, analysis);
       }, 500);
     } else {
       const empty = { tokenCount: 0, totalWords: 0, scores: { clarity: 100, contextRichness: 100, tokenEfficiency: 100, specificity: 100, overall: 100 }, costEstimate: [], issues: [], spans: { highlight: [], redundant: [] } };
@@ -142,12 +118,15 @@ window.__RED.watchInput(
     var err = document.createElement('div');
     err.id = 'red-timeout-error';
     err.style.cssText = 'position:fixed;top:12px;right:12px;z-index:999999;background:#E24B4A;color:#FFF;padding:10px 16px;border-radius:8px;font-size:12px;font-family:system-ui,sans-serif;box-shadow:0 4px 12px rgba(0,0,0,0.15);max-width:300px;line-height:1.4;pointer-events:none;';
-    err.textContent = 'RED: Claude input box not detected. Try refreshing the page.';
+    err.textContent = 'RED: Input box not detected. Try refreshing the page.';
     document.body.appendChild(err);
     setTimeout(function () {
       var e = document.getElementById('red-timeout-error');
       if (e) e.remove();
     }, 15000);
+  },
+  function onSend() {
+    saveSentPrompt();
   }
 );
 
@@ -192,6 +171,31 @@ function saveRefineToHistory(refined) {
       refinedScore: newScore - score,
       issues: last && last.issues ? last.issues.map(function (i) { return i.label; }) : [],
     });
+  }
+}
+
+async function saveSentPrompt() {
+  var text = currentPromptText;
+  if (!text || text.trim().split(/\s+/).length < 3) return;
+  var tokens = window.__RED.countTokens(text);
+  if (tokens <= 0) return;
+  var lastAnalysis = window.__RED._lastAnalysis;
+  var score = lastAnalysis && lastAnalysis.scores ? lastAnalysis.scores.overall : 0;
+  var issues = lastAnalysis && lastAnalysis.issues ? lastAnalysis.issues.map(function (i) { return i.label; }) : [];
+
+  if (window.__RED.saveToFreeHistory) {
+    window.__RED.saveToFreeHistory({
+      prompt: text,
+      score: score,
+      tokens: tokens,
+      refined: false,
+      refinedScore: null,
+      issues: issues,
+    });
+  }
+
+  if (lastAnalysis) {
+    await saveAnalysisToSupabase(text, tokens, lastAnalysis);
   }
 }
 

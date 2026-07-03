@@ -1,7 +1,8 @@
+importScripts('lib/config.js');
 console.log('[RED] Background worker loaded');
 
-var BG_AUTH_URL = 'https://votjuphsggdecoawqeqc.supabase.co';
-var BG_AUTH_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvdGp1cGhzZ2dkZWNvYXdxZXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4NTE3OTQsImV4cCI6MjA5NzQyNzc5NH0.fZW6kk62ka7glAPbJiNrqrh2UU84v3RNuR_e5w04mKE';
+var BG_AUTH_URL = window.__RED_CONFIG.SUPABASE_URL;
+var BG_AUTH_KEY = window.__RED_CONFIG.SUPABASE_ANON_KEY;
 var BG_EXPIRY_KEY = 'supabase_token_expiry';
 var BG_BUFFER_MS = 5 * 60 * 1000;
 

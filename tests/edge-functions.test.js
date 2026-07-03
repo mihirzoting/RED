@@ -352,11 +352,11 @@ describe('Edge Function: create-payment-link/index.ts - payload', () => {
 });
 
 describe('popup.js - Razorpay upgrade flow', () => {
-  const EDGE_FN_ORIGIN = 'https://votjuphsggdecoawqeqc.supabase.co/functions/v1';
+  const EDGE_FN_ORIGIN = 'https://placeholder-project.supabase.co/functions/v1';
   const RAZORPAY_CREATE_FN = EDGE_FN_ORIGIN + '/create-payment-link';
 
   it('constructs correct Edge Function URL', () => {
-    expect(RAZORPAY_CREATE_FN).toBe('https://votjuphsggdecoawqeqc.supabase.co/functions/v1/create-payment-link');
+    expect(RAZORPAY_CREATE_FN).toBe('https://placeholder-project.supabase.co/functions/v1/create-payment-link');
   });
 
   it('sends user_id and email in request body', () => {
@@ -414,125 +414,7 @@ describe('Edge Function: refine/index.ts - checkQuota logic', () => {
   });
 });
 
-describe('Edge Function: razorpay-webhook/index.ts - verifySignature', () => {
-  function hexToBytes(hex) {
-    const bytes = new Uint8Array(hex.length / 2);
-    for (let i = 0; i < hex.length; i += 2) {
-      bytes[i / 2] = parseInt(hex.substring(i, i + 2), 16);
-    }
-    return bytes;
-  }
 
-  it('converts hex string to bytes', () => {
-    const bytes = hexToBytes('aabb');
-    expect(bytes.length).toBe(2);
-    expect(bytes[0]).toBe(0xaa);
-    expect(bytes[1]).toBe(0xbb);
-  });
-
-  it('converts "ff" to [255]', () => {
-    const bytes = hexToBytes('ff');
-    expect(bytes[0]).toBe(255);
-  });
-
-  it('converts "00" to [0]', () => {
-    const bytes = hexToBytes('00');
-    expect(bytes[0]).toBe(0);
-  });
-});
-
-describe('Edge Function: razorpay-webhook/index.ts - event routing', () => {
-  function shouldProcessEvent(eventType) {
-    return eventType === 'payment_link.paid';
-  }
-
-  it('processes payment_link.paid event', () => {
-    expect(shouldProcessEvent('payment_link.paid')).toBe(true);
-  });
-
-  it('ignores other events', () => {
-    expect(shouldProcessEvent('payment_link.created')).toBe(false);
-    expect(shouldProcessEvent('payment.authorized')).toBe(false);
-    expect(shouldProcessEvent('order.paid')).toBe(false);
-  });
-
-  it('ignores unknown events', () => {
-    expect(shouldProcessEvent('')).toBe(false);
-  });
-});
-
-describe('Edge Function: create-razorpay-payment-link/index.ts - payload', () => {
-  function buildPayload(user) {
-    return {
-      amount: 99900,
-      currency: 'INR',
-      description: 'RED Premium — Lifetime Access',
-      customer: {
-        name: user.email?.split('@')[0] || 'RED User',
-        email: user.email || '',
-        contact: '',
-      },
-      notify: { sms: false, email: true },
-      reminder_enable: true,
-      notes: { user_id: user.id },
-    };
-  }
-
-  it('sets correct amount (₹999 = 99900 paise)', () => {
-    const payload = buildPayload({ id: 'u1', email: 'test@example.com' });
-    expect(payload.amount).toBe(99900);
-    expect(payload.currency).toBe('INR');
-  });
-
-  it('includes user_id in notes', () => {
-    const payload = buildPayload({ id: 'user-abc', email: 'a@b.com' });
-    expect(payload.notes.user_id).toBe('user-abc');
-  });
-
-  it('extracts name from email', () => {
-    const payload = buildPayload({ id: 'u1', email: 'john.doe@example.com' });
-    expect(payload.customer.name).toBe('john.doe');
-  });
-
-  it('uses fallback name when email has no local part', () => {
-    const payload = buildPayload({ id: 'u1', email: '' });
-    expect(payload.customer.name).toBe('RED User');
-  });
-
-  it('enables email notification', () => {
-    const payload = buildPayload({ id: 'u1', email: 'test@test.com' });
-    expect(payload.notify.email).toBe(true);
-    expect(payload.notify.sms).toBe(false);
-  });
-
-  it('reminder is enabled', () => {
-    const payload = buildPayload({ id: 'u1', email: 'test@test.com' });
-    expect(payload.reminder_enable).toBe(true);
-  });
-});
-
-describe('popup.js - Razorpay upgrade flow', () => {
-  const EDGE_FN_ORIGIN = 'https://votjuphsggdecoawqeqc.supabase.co/functions/v1';
-  const RAZORPAY_CREATE_FN = EDGE_FN_ORIGIN + '/create-razorpay-payment-link';
-
-  it('constructs correct Edge Function URL', () => {
-    expect(RAZORPAY_CREATE_FN).toBe('https://votjuphsggdecoawqeqc.supabase.co/functions/v1/create-razorpay-payment-link');
-  });
-
-  it('POST method with auth header', () => {
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer test-token',
-    };
-    expect(headers.Authorization).toContain('Bearer ');
-  });
-
-  it('handles successful response with url', () => {
-    const mockResponse = { url: 'https://rzp.io/i/test123', id: 'plink_test123' };
-    expect(mockResponse.url).toMatch(/^https:\/\/rzp\.io/);
-    expect(mockResponse.id).toMatch(/^plink_/);
-  });
-});
 
 describe('Edge Function: refine/index.ts - buildRequestBody', () => {
   function buildRequestBody(name, messages) {

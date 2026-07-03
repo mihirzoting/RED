@@ -1,7 +1,7 @@
-const SUPABASE_URL = 'https://votjuphsggdecoawqeqc.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZvdGp1cGhzZ2dkZWNvYXdxZXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4NTE3OTQsImV4cCI6MjA5NzQyNzc5NH0.fZW6kk62ka7glAPbJiNrqrh2UU84v3RNuR_e5w04mKE';
+const SUPABASE_URL = window.__RED_CONFIG.SUPABASE_URL;
+const SUPABASE_ANON_KEY = window.__RED_CONFIG.SUPABASE_ANON_KEY;
 
-const EDGE_FN_ORIGIN = 'https://votjuphsggdecoawqeqc.supabase.co/functions/v1';
+const EDGE_FN_ORIGIN = window.__RED_CONFIG.SUPABASE_URL + '/functions/v1';
 const QUOTA_FREE = 10;
 const QUOTA_PREMIUM = 300;
 const TOKEN_EXPIRY_KEY = 'supabase_token_expiry';

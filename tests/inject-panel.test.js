@@ -201,8 +201,8 @@ describe('showHistoryLoading()', () => {
   });
 });
 
-describe('borrowClaudeTokens()', () => {
-  function borrowClaudeTokens() {
+describe('borrowPageTokens()', () => {
+  function borrowPageTokens() {
     return {
       bg: '#FAF9F6',
       text: '#1C1917',
@@ -216,7 +216,7 @@ describe('borrowClaudeTokens()', () => {
   }
 
   it('returns expected token structure', () => {
-    const tokens = borrowClaudeTokens();
+    const tokens = borrowPageTokens();
     expect(tokens.bg).toBe('#FAF9F6');
     expect(tokens.text).toBe('#1C1917');
     expect(tokens.border).toBe('#E8E4DE');

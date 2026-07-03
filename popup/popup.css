@@ -49,17 +49,9 @@ body {
 }
 
 .header-logo {
-  width: 28px;
+  width: auto;
   height: 28px;
-  border-radius: 6px;
-  background: var(--brand);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
-  font-size: 14px;
-  color: var(--brand-light);
-  font-weight: 600;
 }
 
 .header-title {

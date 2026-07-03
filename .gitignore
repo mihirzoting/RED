@@ -6,3 +6,8 @@ node_modules/
 .supabase/
 .DS_Store
 Thumbs.db
+lib/config.js
+*.zip
+*.tar.gz
+nul
+supabase/.temp/

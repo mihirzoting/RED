@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "RED",
   "version": "1.0.0",
-  "description": "Refine Every Detail - Claude.ai prompt optimizer",
+  "description": "Refine Every Detail — AI Prompt Optimizer",
   "permissions": ["storage", "scripting", "identity"],
   "host_permissions": ["https://claude.ai/*", "https://votjuphsggdecoawqeqc.supabase.co/*"],
   "background": {
@@ -12,6 +12,7 @@
     {
       "matches": ["https://claude.ai/*"],
       "js": [
+        "lib/config.js",
         "lib/vendor/gpt-tokenizer.js",
         "lib/vendor/chart.min.js",
         "lib/detect-input.js",
@@ -27,7 +28,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["assets/*.svg", "assets/*.png", "assets/icons/*", "lib/vendor/tabler-icons/tabler-icons.css", "lib/vendor/tabler-icons/fonts/*", "lib/vendor/chart.min.js"],
+      "resources": ["lib/config.js", "assets/*.svg", "assets/*.png", "assets/icons/*", "lib/vendor/tabler-icons/tabler-icons.css", "lib/vendor/tabler-icons/fonts/*", "lib/vendor/chart.min.js"],
       "matches": ["https://claude.ai/*"]
     }
   ],
