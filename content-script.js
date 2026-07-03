@@ -67,7 +67,7 @@ chrome.storage.onChanged.addListener((changes) => {
 
 window.__RED.watchInput(
   function onInput(e) {
-    const text = e.target.textContent || '';
+    const text = e.target.tagName === 'TEXTAREA' ? e.target.value : (e.target.textContent || '');
     currentPromptText = text;
     if (window.__RED.updatePromptPreview) window.__RED.updatePromptPreview(text);
     clearTimeout(debounceTimer);
@@ -91,7 +91,7 @@ window.__RED.watchInput(
       }, 50);
     }
 
-    const text = el.textContent || '';
+    const text = el.tagName === 'TEXTAREA' ? el.value : (el.textContent || '');
     currentPromptText = text;
 
     if (window.__RED.updatePromptPreview) window.__RED.updatePromptPreview(text);

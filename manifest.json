@@ -4,13 +4,32 @@
   "version": "1.0.0",
   "description": "Refine Every Detail — AI Prompt Optimizer",
   "permissions": ["storage", "scripting", "identity"],
-  "host_permissions": ["https://claude.ai/*", "https://votjuphsggdecoawqeqc.supabase.co/*"],
+  "host_permissions": [
+    "https://claude.ai/*",
+    "https://chatgpt.com/*",
+    "https://gemini.google.com/*",
+    "https://chat.deepseek.com/*",
+    "https://perplexity.ai/*",
+    "https://grok.com/*",
+    "https://chat.mistral.ai/*",
+    "https://copilot.microsoft.com/*",
+    "https://votjuphsggdecoawqeqc.supabase.co/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "matches": ["https://claude.ai/*"],
+      "matches": [
+        "https://claude.ai/*",
+        "https://chatgpt.com/*",
+        "https://gemini.google.com/*",
+        "https://chat.deepseek.com/*",
+        "https://perplexity.ai/*",
+        "https://grok.com/*",
+        "https://chat.mistral.ai/*",
+        "https://copilot.microsoft.com/*"
+      ],
       "js": [
         "lib/config.js",
         "lib/vendor/gpt-tokenizer.js",
@@ -29,7 +48,16 @@
   "web_accessible_resources": [
     {
       "resources": ["lib/config.js", "assets/*.svg", "assets/*.png", "assets/icons/*", "lib/vendor/tabler-icons/tabler-icons.css", "lib/vendor/tabler-icons/fonts/*", "lib/vendor/chart.min.js"],
-      "matches": ["https://claude.ai/*"]
+      "matches": [
+        "https://claude.ai/*",
+        "https://chatgpt.com/*",
+        "https://gemini.google.com/*",
+        "https://chat.deepseek.com/*",
+        "https://perplexity.ai/*",
+        "https://grok.com/*",
+        "https://chat.mistral.ai/*",
+        "https://copilot.microsoft.com/*"
+      ]
     }
   ],
   "action": {
